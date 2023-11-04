@@ -30,6 +30,18 @@ class Form
             </div>
             HTML;
     }
+    public function file(string $name, string $label, bool $required = true)
+    {
+        $required = $required ? 'required' : '';
+        [$fieldClass, $fieldFeedback] = $this->getFieldClassAndFeedback($name);
+        return <<<HTML
+            <div class="mb-3">
+                <label for="field{$name}" class="form-label"> {$label}</label>
+                <input {$required} type="file" name="{$name}" class="{$fieldClass}" id="field{$name}">
+                {$fieldFeedback}
+            </div>
+            HTML;
+    }
     public function password(string $name, string $label, bool $required = true)
     {
         $value = $this->getValue($name);

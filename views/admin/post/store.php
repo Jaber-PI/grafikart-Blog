@@ -12,9 +12,9 @@ require '../vendor/autoload.php';
 
 $db = new Database();
 
-session_start();
 
 try {
+    dd($_FILES);
     $validator = new PostValidator($_POST);
     $validator->validate();
     $categoriesList = $_POST['categoriesList'] ?? [];

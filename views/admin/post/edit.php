@@ -27,7 +27,7 @@ if ($postSlug !== $post->getSlug()) {
 session_start();
 $errors = Session::get('errors', []);
 $oldValues = Session::get('oldValues', null);
-Session::flush();
+Session::unflash();
 
 $data = $oldValues ?? $post;
 
@@ -35,7 +35,7 @@ $form = new Form($data, $errors);
 
 ?>
 <div class="container pt-5 mt-5 px-5">
-    <form action="update" method="POST" onsubmit="return confirm('do you want t continue and add post')">
+    <form action="update" method="POST" onsubmit="return confirm('do you want to continue and add post')">
         <input hidden type="text" name="id" value="<?= $post->getId() ?>">
 
         <div class="mb-3">

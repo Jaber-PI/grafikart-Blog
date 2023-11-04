@@ -1,5 +1,6 @@
 <?php
 
+use App\Authenticator;
 use App\Router;
 
 define('VIEW_PATH', dirname(__DIR__) . '/views/');
@@ -21,6 +22,8 @@ if (isset($_GET['page']) && $_GET['page'] === '1') {
     header('location: ' . $url);
     exit();
 }
+
+
 
 $router = new Router(VIEW_PATH);
 $router

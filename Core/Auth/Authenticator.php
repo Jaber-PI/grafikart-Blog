@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Auth;
 
+use App\Database;
 use App\Model\User;
 
 class Authenticator
@@ -63,5 +64,12 @@ class Authenticator
             return true;
         }
         return false;
+    }
+
+    public static function checkPermission()
+    {
+        if (!static::isLogged()) {
+            throw new AuthenticationException('Access Forbidden!');
+        }
     }
 }

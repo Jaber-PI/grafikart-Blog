@@ -8,10 +8,10 @@ use App\Table\CategoryTable;
 
 require '../vendor/autoload.php';
 
-session_start();
+
 $errors = Session::get('errors', []);
 $oldValues = Session::get('oldValues', null);
-Session::flush();
+Session::unflash();
 
 $db = new Database();
 
@@ -32,6 +32,9 @@ $form = new Form($data, $errors);
         </div>
         <div class="mb-3">
             <?= $form->textArea('content', 'Post Content', rows: 9) ?>
+        </div>
+        <div class="mb-3">
+            <?= $form->file('image', 'Post Image') ?>
         </div>
         <div class="mb-3">
             <?= $form->select('categoriesList', 'Categories', $allCategoriesList, multiple: true) ?>

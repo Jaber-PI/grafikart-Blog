@@ -3,6 +3,8 @@
 namespace App;
 
 use AltoRouter;
+use App\Auth\AuthenticationException;
+use App\Auth\Authenticator;
 use Exception;
 
 class Router
@@ -47,6 +49,15 @@ class Router
 
         $isAdmin = strpos($match['target'], 'admin/');
         $layout = $isAdmin === false ? 'partials/default.php' : 'admin/partials/default.php';
+
+        if ($isAdmin !== false) {
+            try {
+                Authenticator::checkPermission();
+            } catch (AuthenticationException $e) {
+                header('location: ' . $router->url('login') . '?forbidden');
+                return;
+            }
+        }
         ob_start();
         require $this->viewPath .  $match['target'] . '.php';
         $content = ob_get_clean();

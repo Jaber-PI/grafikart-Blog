@@ -1,13 +1,8 @@
 <?php
 
-use App\Authenticator;
 use App\Database;
 use App\Table\PostTable;
 
-if (!Authenticator::isLogged()) {
-    http_response_code(401);
-    header('location: ' . $router->url('home') . '?forbiden');
-};
 
 define('ARTICLE_PERPAGE', 12);
 $title = 'Posts';

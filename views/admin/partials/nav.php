@@ -1,6 +1,6 @@
 <?php
 
-use App\Authenticator;
+use App\Auth\Authenticator;
 
 ?>
 <!-- nav bar for all pages  -->
@@ -37,7 +37,7 @@ use App\Authenticator;
                         <a class=" btn btn-sm btn-primary" href="/login">Log In</a>
                     <?php endif ?>
                 </li>
-                <li class="nav-item dropdown ms-auto ">
+                <li class="nav-item dropdown ">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         User
                     </a>

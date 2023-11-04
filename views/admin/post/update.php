@@ -45,5 +45,5 @@ try {
     exit();
 }
 
-header('location: ' . $router->url('admin_posts') . '?updated');
+header('location: ' . $router->url('admin_post') . '?updated');
 exit();

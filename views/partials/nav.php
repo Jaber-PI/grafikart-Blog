@@ -1,6 +1,6 @@
 <?php
 
-use App\Authenticator;
+use App\Auth\Authenticator;
 
 ?>
 <!-- nav bar for all pages  -->
@@ -25,7 +25,7 @@ use App\Authenticator;
 
                 <li class="nav-item ms-auto d-flex align-items-center">
                     <?php if (Authenticator::isLogged()) : ?>
-                        <form action="/logout">
+                        <form action="/logout" class="ms-auto" method="POST">
                             <button type="submit" class=" btn btn-sm btn-danger">Log Out</button>
                         </form>
                     <?php else : ?>

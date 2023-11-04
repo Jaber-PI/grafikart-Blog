@@ -1,6 +1,6 @@
 <?php
 
-use App\Authenticator;
+use App\Auth\Authenticator;
 use App\Database;
 use App\HTML\Form;
 use App\Model\User;
@@ -35,7 +35,12 @@ $data = $user ?? [];
 $form = new Form($data, $errors);
 ?>
 
-<div class="container h-100 d-flex justify-content-center mt-5 pt-5">
+<div class="container h-100 d-flex flex-column align-items-center mt-5 pt-5">
+    <?php if (isset($_GET['forbidden'])) : ?>
+        <div class="alert alert-warning">
+            Access Forbidden : Log in to Access this page
+        </div>
+    <?php endif ?>
     <form class="login" action="/login" method="POST">
         <!-- User Name input -->
         <div class="form-outline mb-4">

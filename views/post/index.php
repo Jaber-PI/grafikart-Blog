@@ -4,7 +4,7 @@ use App\Database;
 use App\Table\PostTable;
 
 define('ARTICLE_PERPAGE', 12);
-$title = 'My Posts';
+$title = 'Posts';
 
 $db  = new Database();
 $table = new PostTable($db);
