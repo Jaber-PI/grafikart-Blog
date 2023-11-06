@@ -26,7 +26,7 @@ $form = new Form($data, $errors);
 ?>
 
 <div class="container pt-5 mt-5 px-5">
-    <form action="store" method="POST" onsubmit="return confirm('do you want t continue and add post')">
+    <form action="store" method="POST" enctype="multipart/form-data" onsubmit="return confirm('do you want t continue and add post')">
         <div class="mb-3">
             <?= $form->input('name', 'Post name') ?>
         </div>

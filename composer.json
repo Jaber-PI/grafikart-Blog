@@ -20,6 +20,7 @@
         "altorouter/altorouter": "^2.0",
         "filp/whoops": "^2.15",
         "fakerphp/faker": "^1.23",
-        "symfony/validator": "^6.3"
+        "symfony/validator": "^6.3",
+        "intervention/image": "^2.7"
     }
 }

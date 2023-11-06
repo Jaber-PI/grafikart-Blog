@@ -23,8 +23,9 @@ if ($postSlug !== $post->getSlug()) {
     header('location: ' . $router->url('admin_post_edit', ['id' => $postId, 'slug' => $post->getSlug()]));
     exit();
 }
-
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 $errors = Session::get('errors', []);
 $oldValues = Session::get('oldValues', null);
 Session::unflash();
@@ -35,15 +36,16 @@ $form = new Form($data, $errors);
 
 ?>
 <div class="container pt-5 mt-5 px-5">
-    <form action="update" method="POST" onsubmit="return confirm('do you want to continue and add post')">
+    <form action="update" method="POST" enctype="multipart/form-data" onsubmit="return confirm('do you want to continue and add post')">
         <input hidden type="text" name="id" value="<?= $post->getId() ?>">
-
         <div class="mb-3">
             <?= $form->input('name', 'Post name') ?>
         </div>
-
         <div class="mb-3">
             <?= $form->textArea('content', 'Post Content', rows: 7) ?>
+        </div>
+        <div class="mb-3">
+            <?= $form->file('image', 'Post Image', false) ?>
         </div>
         <div class="mb-3">
             <?= $form->select('categoriesList', 'Categories', $allCategoriesList, multiple: true) ?>

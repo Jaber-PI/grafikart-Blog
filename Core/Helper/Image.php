@@ -1,104 +1,18 @@
 <?php
 
+namespace App\Helper;
 
-namespace App\Validation;
-
-use App\Validation\ValidationException;
 use finfo;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
-class PostValidator extends Validator
+class Image
 {
-    public function validate(): bool
+    public static function getImageExt($path)
     {
-        $this->validateName();
-        $this->validateContent();
-        $this->validateImage();
-
-        if (!empty($this->errors)) {
-            ValidationException::throw($this->errors, $this->data);
-        }
-
-        return true;
-    }
-
-    public function errors(): array
-    {
-        return $this->errors;
-    }
-
-    public function validateImage(string $key = 'image')
-    {
-        $value = $this->data[$key];
-
-        $filePath = $value['tmp_name'] ?? '';
-
-        if (empty($value)) {
-            $this->errors[$key][] =  "There is no file to upload.";
-            return;
-        }
-
-        switch ($value['error']) {
-            case UPLOAD_ERR_OK:
-                break;
-            case UPLOAD_ERR_NO_FILE:
-                break;
-            case UPLOAD_ERR_INI_SIZE:
-            case UPLOAD_ERR_FORM_SIZE:
-                $this->errors[$key][] = 'Exceeded filesize limit.';
-                return;
-                break;
-            default:
-                $this->errors[$key][] = 'Unknown errors accured while trying to upload file.';
-                return;
-        }
-
-        // check file size 
-        $fileSize = $value['size'];
-        if ($fileSize === 0) {
-            // $this->errors[$key][] = 'the file is empty';
-            return;
-        }
-
-        // check file type 
-        [$isallowedtype, $ext] = $this->checkFileExt($filePath);
-        if (!$isallowedtype) {
-            $this->errors[$key][] = 'the file extention  ' . $ext . ' is not allowed';
-            return;
-        }
-
-        // check file size max 
-        if ($fileSize > (1 * 1024 * 1024)) {
-            $this->errors[$key][] = "Sorry, your file is too large.";
-            return;
-        }
-    }
-
-    private function  checkFileExt($filePath)
-    {
-        $allowedTypes = [
-            'image/png' => 'png',
-            'image/jpeg' => 'jpg',
-            'image/gif'  => 'gif'
-        ];
-
-        $isallowed = false;
-
         $finfo = new finfo(FILEINFO_MIME_TYPE);
-        $mime_type = $finfo->file($filePath);
-
-        if (in_array($mime_type, array_keys($allowedTypes))) {
-            $isallowed = true;
-        }
-
-        return [
-            $isallowed,
-            $this->mime2ext($mime_type)
-        ];
+        $mime_type = $finfo->file($path);
+        return static::mime2ext($mime_type);
     }
-
-    private function mime2ext($mime)
+    public static function mime2ext($mime)
     {
         $mime_map = [
             'video/3gpp2'                                                               => '3g2',
@@ -284,37 +198,6 @@ class PostValidator extends Validator
             'text/x-scriptzsh'                                                          => 'zsh',
         ];
 
-        return isset($mime_map[$mime]) === true ? $mime_map[$mime] : false;
-    }
-
-    public function validateName(string $key = 'name')
-    {
-        $id = $this->data['id'] ?? 0;
-        $violations = $this->validator->validate($this->data[$key], [
-            new Length(['min' => 10]),
-            new NotBlank(),
-            new Unique('post', $key, $id)
-        ]);
-
-        if (0 !== count($violations)) {
-            // there are errors, now you can show them
-            foreach ($violations as $violation) {
-                $this->errors[$key][] = $violation->getMessage();
-            }
-        }
-    }
-
-    public function validateContent(string $key = 'content')
-    {
-        $violations = $this->validator->validate($this->data[$key], [
-            new Length(['min' => 100]),
-        ]);
-
-        if (0 !== count($violations)) {
-            // there are errors, now you can show them
-            foreach ($violations as $violation) {
-                $this->errors[$key][] = $violation->getMessage();
-            }
-        }
+        return isset($mime_map[$mime]) ? $mime_map[$mime] : false;
     }
 }

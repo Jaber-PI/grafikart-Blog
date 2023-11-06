@@ -1,5 +1,6 @@
 <?php
 
+use App\Attachment\PostAttachment;
 use App\Database;
 use App\Session;
 use App\Table\CategoryTable;
@@ -17,10 +18,8 @@ $categoriesList = $_POST['categoriesList'];
 $post = (new PostTable($db))->getItem($postId);
 $params = ['id' => $postId, 'slug' => $post->getSlug()];
 
-session_start();
-
 try {
-    $validator = new PostValidator($_POST);
+    $validator = new PostValidator(array_merge($_POST, $_FILES));
     $validator->validate();
 
     $categoriesList = $_POST['categoriesList'];
@@ -31,9 +30,16 @@ try {
         $post->addCategory($category);
     }
 
-    $post->setName($_POST['name']);
-    $post->setContent($_POST['content']);
-    $post->setSlug($_POST['name']);
+    if ($_FILES['image']['size'] !== 0) {
+        $oldImage = $post->getImage();
+        $image = PostAttachment::UploadImage($_FILES['image']) ?: '';
+        PostAttachment::deleteImage($oldImage);
+        $post->setImage($image);
+    }
+
+    $post->setName($_POST['name'])
+        ->setContent($_POST['content'])
+        ->setSlug($_POST['name']);
 
     (new PostTable($db))->updatePost($post);
     (new PostCategoryTable($db))->updatePostCatgeories($post);

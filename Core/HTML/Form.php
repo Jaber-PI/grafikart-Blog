@@ -32,13 +32,22 @@ class Form
     }
     public function file(string $name, string $label, bool $required = true)
     {
+        $value = $this->getValue($name) ?? '';
         $required = $required ? 'required' : '';
         [$fieldClass, $fieldFeedback] = $this->getFieldClassAndFeedback($name);
         return <<<HTML
-            <div class="mb-3">
-                <label for="field{$name}" class="form-label"> {$label}</label>
-                <input {$required} type="file" name="{$name}" class="{$fieldClass}" id="field{$name}">
-                {$fieldFeedback}
+            <div class="mb-3 ">
+                <div class="row">
+                    <div class="col-9">
+                        <label for="field{$name}" class="form-label"> {$label}</label>
+                        <input {$required} type="file" name="{$name}" class="{$fieldClass}" id="field{$name}">
+                        {$fieldFeedback}
+                    </div>
+                    <div class="col-3">
+                        <img src="/upload/post/{$value}" alt="photo will show up here" style="width:220px">
+                    </div>
+
+                </div>
             </div>
             HTML;
     }

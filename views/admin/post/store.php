@@ -1,5 +1,6 @@
 <?php
 
+use App\Attachment\PostAttachment;
 use App\Database;
 use App\Model\Post;
 use App\Session;
@@ -14,8 +15,7 @@ $db = new Database();
 
 
 try {
-    dd($_FILES);
-    $validator = new PostValidator($_POST);
+    $validator = new PostValidator(array_merge($_POST, $_FILES));
     $validator->validate();
     $categoriesList = $_POST['categoriesList'] ?? [];
 
@@ -26,9 +26,12 @@ try {
         $post->addCategory($category);
     }
 
+    $image = PostAttachment::UploadImage($_FILES['image']) ?: '';
+
     $post->setName($_POST['name'])
         ->setContent($_POST['content'])
-        ->setSlug($_POST['name']);
+        ->setSlug($_POST['name'])
+        ->setImage($image);
 
     $postId = (new PostTable($db))->addPost($post);
 
@@ -42,5 +45,5 @@ try {
     exit();
 }
 
-header('location: ' . $router->url('admin_posts') . '?inserted');
+header('location: ' . $router->url('admin_post') . '?inserted');
 exit();

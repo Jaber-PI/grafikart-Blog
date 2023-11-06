@@ -1,9 +1,9 @@
 <?php
 
-use App\Authenticator;
 use App\Router;
 
 define('VIEW_PATH', dirname(__DIR__) . '/views/');
+define('UPLOADS_PATH', './upload');
 
 include '../vendor/autoload.php';
 

@@ -17,6 +17,9 @@ class Post
 
     protected string $content;
 
+    protected  $image;
+    protected  $oldImage;
+
     protected $created_at;
     protected $slug;
     /** @var Category[] */
@@ -76,6 +79,19 @@ class Post
         $this->slug = $slug;
         return $this;
     }
+    public function getImage(): string
+    {
+        return $this->image ?? 'cat-01.jpg';
+    }
+    public function setImage(string $path): self
+    {
+        if ($path === '') {
+            return $this;
+        }
+        $this->image = $path;
+        return $this;
+    }
+
     public function getCreatedAt(): DateTime
     {
         return new DateTime($this->created_at);
@@ -96,12 +112,11 @@ class Post
     }
     public function card($router)
     {
-        $imgLink = $this->getId() % 8 + 1;
         $postLink = $router->url('post', ['slug' => $this->getSlug(), 'id' => $this->getId()]);
         ob_start();
         echo <<<HTML
         <div class="card">
-            <img src="../../includes/images/cat-0{$imgLink}.jpg" alt="test 1">
+            <img src="upload/post/{$this->getImage()}" alt="test 1">
             <div class="discription">
                 <h3>
                     {$this->getName()}

@@ -9,7 +9,7 @@ class Validator
     protected $data;
     protected $db;
     protected $validator;
-    protected $errors;
+    protected $errors = [];
 
     public function __construct($data)
     {

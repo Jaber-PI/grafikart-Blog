@@ -52,9 +52,10 @@ class PostTable extends Table
         $params = [
             'postName' => $post->getName(false),
             'postSlug' => $post->getSlug(),
-            'postContent' => $post->getContent(false)
+            'postContent' => $post->getContent(false),
+            'image' => $post->getImage()
         ];
-        $insertQuery = "INSERT INTO post SET name= :postName, slug = :postSlug, content = :postContent, created_at = now()";
+        $insertQuery = "INSERT INTO post SET name= :postName, slug = :postSlug, content = :postContent,image = :image, created_at = now()";
         $lastInsertedId =  $this->db->insert($insertQuery, $params);
         return $lastInsertedId;
     }
@@ -64,9 +65,10 @@ class PostTable extends Table
             'id' => $post->getId(),
             'name' => $post->getName(),
             'content' => $post->getContent(),
-            'slug' => $post->getSlug()
+            'slug' => $post->getSlug(),
+            'image' => $post->getImage()
         ];
-        $insertQuery = "UPDATE post SET name= :name, slug = :slug, content = :content WHERE id = :id";
+        $insertQuery = "UPDATE post SET name= :name, slug = :slug, content = :content, image = :image WHERE id = :id";
         $this->db->query($insertQuery, $params);
     }
 }
